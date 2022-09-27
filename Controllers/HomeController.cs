@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using BookingApp.Models;
+using booking_app_cs.Models;
 
-namespace BookingApp.Controllers;
+namespace booking_app_cs.Controllers;
 
 public class HomeController : Controller
 {

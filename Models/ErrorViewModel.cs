@@ -1,4 +1,4 @@
-namespace BookingApp.Models;
+namespace booking_app_cs.Models;
 
 public class ErrorViewModel
 {
