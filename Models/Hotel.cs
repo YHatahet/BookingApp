@@ -2,11 +2,11 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 
-namespace MongoDBDemo;
+namespace BookingAppApi.Models;
 
 public class Hotel
 {
-    [BsonId]
+    [BsonId] //primary key
     [BsonRepresentation(BsonType.ObjectId)]
 
     public string name { get; set; }

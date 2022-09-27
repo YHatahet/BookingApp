@@ -2,7 +2,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 
-namespace MongoDBDemo;
+namespace BookingAppApi.Models;
 
 public class User
 {
