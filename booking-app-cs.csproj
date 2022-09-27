@@ -7,4 +7,8 @@
     <RootNamespace>booking_app_cs</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="2.17.1" />
+  </ItemGroup>
+
 </Project>
