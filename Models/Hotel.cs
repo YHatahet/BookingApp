@@ -9,6 +9,7 @@ public class Hotel
     [BsonId] //primary key
     [BsonRepresentation(BsonType.ObjectId)]
 
+    public string _id { get; set; }
     public string name { get; set; }
     public string _owner { get; set; } //TODO
     public int rating { get; set; }

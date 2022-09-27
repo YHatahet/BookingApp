@@ -8,7 +8,7 @@ public class Room
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-
+    public string _id { get; set; }
     public string title { get; set; }
     public string _hotel { get; set; } //TODO
     public string description { get; set; }
