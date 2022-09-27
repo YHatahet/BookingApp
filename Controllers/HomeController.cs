@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using ahoy_dotnet.Models;
+using BookingApp.Models;
 
-namespace ahoy_dotnet.Controllers;
+namespace BookingApp.Controllers;
 
 public class HomeController : Controller
 {

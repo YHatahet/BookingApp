@@ -1,4 +1,4 @@
-namespace ahoy_dotnet.Models;
+namespace BookingApp.Models;
 
 public class ErrorViewModel
 {
