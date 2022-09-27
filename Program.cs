@@ -1,6 +1,10 @@
+using BookingAppApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.Configure<BookingAppDBSettings>(
+    builder.Configuration.GetSection("BookStoreDatabase"));
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
