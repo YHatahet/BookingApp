@@ -1,9 +1,12 @@
-using BookingAppApi.Models;
+using MongoDB.Driver;
+
 var builder = WebApplication.CreateBuilder(args);
 
+// Import from appsettings
+var BookingAppDBSettings = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("BookingAppDBSettings");
+
 // Add services to the container.
-builder.Services.Configure<BookingAppDBSettings>(
-    builder.Configuration.GetSection("BookStoreDatabase"));
+builder.Services.AddSingleton<IMongoClient, MongoClient>(s => new MongoClient(BookingAppDBSettings["ConnectionString"]));
 
 builder.Services.AddControllersWithViews();
 
