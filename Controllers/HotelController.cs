@@ -26,7 +26,7 @@ public class HotelController : ControllerBase
     }
 
     [HttpGet, Route("{id}")]
-    public Hotel GetHotelFromId(string id)
+    public Hotel GetHotel(string id)
     {
         return _hotelCollection.Find(o => o._id == id).ToList()[0];
     }
@@ -35,5 +35,12 @@ public class HotelController : ControllerBase
     public IEnumerable<Hotel> GetTopRatedHotels(int amount)
     {
         return _hotelCollection.Find(o => o.rating != null).SortByDescending(o => o.rating).Limit(amount).ToList();
+    }
+
+
+    [HttpDelete, Route("{id}")]
+    public Hotel DeleteHotel(string id)
+    {
+        return _hotelCollection.FindOneAndDelete(o => o._id == id);
     }
 }
