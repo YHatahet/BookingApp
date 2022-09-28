@@ -8,9 +8,8 @@ using MongoDB.Driver;
 
 namespace BookingApp.Controllers;
 
-[ApiController]
-[Route("[controller]")]
-public class HotelController : Controller //TODO Controller vs controller base? with or without view support?
+[ApiController, Route("hotels")]
+public class HotelController : ControllerBase
 {
 
     private IMongoCollection<Hotel> _hotelCollection;
@@ -20,25 +19,21 @@ public class HotelController : Controller //TODO Controller vs controller base? 
         _hotelCollection = db.GetCollection<Hotel>("hotels");
     }
 
-    public IActionResult Index()
+    [HttpGet, Route("all/{page}/{limit}")]
+    public IEnumerable<Hotel> GetAllHotels(int page, int limit)
     {
-        return View();
+        return _hotelCollection.Find(_ => true).Skip(page * limit).Limit(limit).ToList();
     }
 
-    public IActionResult Privacy()
+    [HttpGet, Route("{id}")]
+    public Hotel GetHotelFromId(string id)
     {
-        return View();
+        return _hotelCollection.Find(o => o._id == id).ToList()[0];
     }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
+    [HttpGet, Route("topRated/{amount}")]
+    public IEnumerable<Hotel> GetTopRatedHotels(int amount)
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    }
-
-    [HttpGet]
-    public IEnumerable<Hotel> Get()
-    {
-        return _hotelCollection.Find(_ => true).ToList();
+        return _hotelCollection.Find(o => o.rating != null).SortByDescending(o => o.rating).Limit(amount).ToList();
     }
 }
