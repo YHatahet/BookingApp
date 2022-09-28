@@ -2,7 +2,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 
-namespace BookingAppApi.Models;
+namespace BookingApp.Models;
 
 public class Review
 {
@@ -11,6 +11,8 @@ public class Review
     public string _id { get; set; }
     public int rating { get; set; }
     public string review { get; set; }
-    public string _hotel { get; set; } //TODO
-    public string _user { get; set; } //TODO
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string _hotel { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string _user { get; set; }
 }
