@@ -2,9 +2,12 @@ namespace BookingAppApi.Models;
 
 public class BookingAppDBSettings
 {
-    public string ConnectionString { get; set; } = null!;
+    public string ConnectionString { get; set; } = String.Empty;
 
-    public string DatabaseName { get; set; } = null!;
+    public string DatabaseName { get; set; } = String.Empty;
 
-    public string BooksCollectionName { get; set; } = null!;
+    public string HotelCollectionName { get; set; } = String.Empty;
+    public string RoomsCollectionName { get; set; } = String.Empty;
+    public string UsersCollectionName { get; set; } = String.Empty;
+    public string ReviewsCollectionName { get; set; } = String.Empty;
 }

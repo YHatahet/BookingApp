@@ -12,5 +12,5 @@ public class User
     public string username { get; set; } //TODO make unique
     public string email { get; set; } //TODO make unique
     public string password { get; set; }
-    public bool? isAdmin { get; set; } = false;
+    private bool? isAdmin { get; set; } = false;
 }
