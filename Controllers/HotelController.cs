@@ -1,52 +1,69 @@
-// using Microsoft.Extensions.Configuration;
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using BookingApp.Models;
 
 using MongoDB.Bson;
 using MongoDB.Driver;
-
+using BookingApp.Services;
 namespace BookingApp.Controllers;
 
 [ApiController, Route("hotels")]
 public class HotelController : ControllerBase
 {
 
-    private IMongoCollection<Hotel> _hotelCollection;
-    public HotelController(IMongoClient client)
+    private readonly IMongoCollection<Hotel> _hotelCollection;
+
+    public HotelController(BookingAppService bookingAppService)
     {
-        var db = client.GetDatabase("hotelCollection");
-        _hotelCollection = db.GetCollection<Hotel>("hotels");
+        _hotelCollection = bookingAppService._hotelCollection;
     }
+
+
+    [HttpPost("create")]
+    public async Task<IActionResult> CreateHotel([FromBody] Hotel newHotel)
+    {
+        await _hotelCollection.InsertOneAsync(newHotel);
+        return CreatedAtAction(nameof(CreateHotel), new { id = newHotel._id }, newHotel);
+
+    }
+
 
     [HttpGet, Route("all/{page}/{limit}")]
-    public IEnumerable<Hotel> GetAllHotels(int page, int limit)
+    public async Task<List<Hotel>> GetAllHotels(int page, int limit)
     {
-        return _hotelCollection.Find(_ => true).Skip(page * limit).Limit(limit).ToList();
+        return await _hotelCollection.Find(new BsonDocument()).Skip(page * limit).Limit(limit).ToListAsync();
     }
 
-    [HttpGet, Route("{id}")]
-    public Hotel GetHotel(string id)
+
+    [HttpGet("{id}")]
+    public async Task<Hotel> GetHotel(string id)
     {
-        return _hotelCollection.Find(o => o._id == id).FirstOrDefault();
+        return await _hotelCollection.Find(o => o._id == id).FirstOrDefaultAsync();
     }
 
     [HttpGet, Route("topRated/{amount}")]
-    public IEnumerable<Hotel> GetTopRatedHotels(int amount)
+    public Task<List<Hotel>> GetTopRatedHotels(int amount)
     {
-        return _hotelCollection.Find(o => o.rating != null).SortByDescending(o => o.rating).Limit(amount).ToList();
+        return _hotelCollection.Find(o => o.rating != null).SortByDescending(o => o.rating).Limit(amount).ToListAsync();
     }
 
 
-    [HttpPut, Route("{id}")]
-    public Hotel UpdateHotel(string id)
-    {
-        return _hotelCollection.FindOneAndUpdate(o => o._id == id, );
-    }
+    // [HttpPut("{id}")]
+    // public async Task<IActionResult> UpdateHotel(string id, [FromBody] Hotel hotelBody)
+    // {
+    //     FilterDefinition<Hotel> filter = Builders<Hotel>.Filter.Eq("_id", id);
+    //     // UpdateDefinition<Hotel> update = Builders<Hotel>.Update.Combine(hotelBody.to);
+    //     UpdateDefinition<Hotel> update = Builders<Hotel>.Update.Combine();
+    //     // await _hotelCollection.UpdateOneAsync(filter, update);
+    //     return NoContent();
 
-    [HttpDelete, Route("{id}")]
-    public Hotel DeleteHotel(string id)
+    // }
+
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteHotel(string id)
     {
-        return _hotelCollection.FindOneAndDelete(o => o._id == id);
+        FilterDefinition<Hotel> filter = Builders<Hotel>.Filter.Eq("_id", id);
+        await _hotelCollection.DeleteOneAsync(filter);
+        return NoContent();
     }
 }
