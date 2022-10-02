@@ -11,6 +11,7 @@ public class BookingAppService
     public readonly IMongoCollection<User> _userCollection;
     public readonly IMongoCollection<Review> _reviewCollection;
     public readonly IMongoCollection<Room> _roomCollection;
+    public readonly string token;
 
     public BookingAppService(IOptions<BookingAppDBSettings> bookingAppDBSettings)
     {
@@ -20,6 +21,7 @@ public class BookingAppService
         _userCollection = database.GetCollection<User>(bookingAppDBSettings.Value.UserCollectionName);
         _reviewCollection = database.GetCollection<Review>(bookingAppDBSettings.Value.ReviewCollectionName);
         _roomCollection = database.GetCollection<Room>(bookingAppDBSettings.Value.RoomCollectionName);
+        token = bookingAppDBSettings.Value.Token;
     }
 
 }
