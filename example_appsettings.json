@@ -2,10 +2,10 @@
   "BookingAppDB": {
     "ConnectionString": "mongodb+srv://yamen:classyJumbo135@cluster0.jm0dlcu.mongodb.net/",
     "DatabaseName": "hotelCollection",
-    "HotelCollection": "Hotel",
-    "UserCollection": "User",
-    "ReviewCollection": "Review",
-    "RoomCollection": "Room"
+    "HotelCollectionName": "hotels",
+    "UserCollectionName": "users",
+    "ReviewCollectionName": "reviews",
+    "RoomCollectionName": "rooms"
   },
   "Logging": {
     "LogLevel": {
