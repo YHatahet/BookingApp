@@ -8,7 +8,7 @@ public class User
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string _id { get; set; }
+    public string? _id { get; set; }
     public string username { get; set; } //TODO make unique
     public string email { get; set; } //TODO make unique
     public string password { get; set; }
