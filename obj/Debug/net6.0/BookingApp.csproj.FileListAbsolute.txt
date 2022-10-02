@@ -42,3 +42,5 @@
 /home/razrlab/Documents/gitrepo/BookingApp/obj/Debug/net6.0/ref/BookingApp.dll
 /home/razrlab/Documents/gitrepo/BookingApp/obj/Debug/net6.0/BookingApp.pdb
 /home/razrlab/Documents/gitrepo/BookingApp/obj/Debug/net6.0/BookingApp.genruntimeconfig.cache
+/home/razrlab/Documents/gitrepo/BookingApp/bin/Debug/net6.0/Microsoft.OpenApi.dll
+/home/razrlab/Documents/gitrepo/BookingApp/bin/Debug/net6.0/Swashbuckle.AspNetCore.Swagger.dll
