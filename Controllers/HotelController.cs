@@ -47,16 +47,22 @@ public class HotelController : ControllerBase
     }
 
 
-    // [HttpPut("{id}")]
-    // public async Task<IActionResult> UpdateHotel(string id, [FromBody] Hotel hotelBody)
-    // {
-    //     FilterDefinition<Hotel> filter = Builders<Hotel>.Filter.Eq("_id", id);
-    //     // UpdateDefinition<Hotel> update = Builders<Hotel>.Update.Combine(hotelBody.to);
-    //     UpdateDefinition<Hotel> update = Builders<Hotel>.Update.Combine();
-    //     // await _hotelCollection.UpdateOneAsync(filter, update);
-    //     return NoContent();
-
-    // }
+    [HttpPut("{id}")]
+    public async Task<Hotel> UpdateHotel(string id, [FromBody] Hotel hotelBody)
+    {
+        var foundHotel = await _hotelCollection.Find(o => o._id == id).FirstOrDefaultAsync();
+        if (hotelBody.name != null) foundHotel.name = hotelBody.name;
+        if (hotelBody._owner != null) foundHotel._owner = hotelBody._owner;
+        if (hotelBody.description != null) foundHotel.description = hotelBody.description;
+        if (hotelBody.address != null) foundHotel.address = hotelBody.address;
+        if (hotelBody.city != null) foundHotel.city = hotelBody.city;
+        if (hotelBody.distanceFromCenter != null) foundHotel.distanceFromCenter = hotelBody.distanceFromCenter;
+        if (hotelBody.rating != null) foundHotel.rating = hotelBody.rating;
+        if (hotelBody.numOfRatings != null) foundHotel.numOfRatings = hotelBody.numOfRatings;
+        if (hotelBody.featured != null) foundHotel.featured = hotelBody.featured;
+        await _hotelCollection.ReplaceOneAsync(o => o._id == id, foundHotel);
+        return foundHotel;
+    }
 
 
     [HttpDelete("{id}")]

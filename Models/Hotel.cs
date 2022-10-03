@@ -17,7 +17,7 @@ public class Hotel
     public string? address { get; set; }
     public string? city { get; set; }
     public double? distanceFromCenter { get; set; }
-    public double? rating { get; set; } = 0;
-    public int? numOfRatings { get; set; } = 0;
-    public bool? featured { get; set; } = false;
+    public double? rating { get; set; }
+    public int? numOfRatings { get; set; }
+    public bool? featured { get; set; }
 }
