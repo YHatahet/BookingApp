@@ -44,3 +44,11 @@
 /home/razrlab/Documents/gitrepo/BookingApp/obj/Debug/net6.0/BookingApp.genruntimeconfig.cache
 /home/razrlab/Documents/gitrepo/BookingApp/bin/Debug/net6.0/Microsoft.OpenApi.dll
 /home/razrlab/Documents/gitrepo/BookingApp/bin/Debug/net6.0/Swashbuckle.AspNetCore.Swagger.dll
+/home/razrlab/Documents/gitrepo/BookingApp/bin/Debug/net6.0/Swashbuckle.AspNetCore.SwaggerGen.dll
+/home/razrlab/Documents/gitrepo/BookingApp/bin/Debug/net6.0/Swashbuckle.AspNetCore.SwaggerUI.dll
+/home/razrlab/Documents/gitrepo/BookingApp/obj/Debug/net6.0/BookingApp.MvcApplicationPartsAssemblyInfo.cs
+/home/razrlab/Documents/gitrepo/BookingApp/bin/Debug/net6.0/Microsoft.IdentityModel.Abstractions.dll
+/home/razrlab/Documents/gitrepo/BookingApp/bin/Debug/net6.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/home/razrlab/Documents/gitrepo/BookingApp/bin/Debug/net6.0/Microsoft.IdentityModel.Logging.dll
+/home/razrlab/Documents/gitrepo/BookingApp/bin/Debug/net6.0/Microsoft.IdentityModel.Tokens.dll
+/home/razrlab/Documents/gitrepo/BookingApp/bin/Debug/net6.0/System.IdentityModel.Tokens.Jwt.dll
