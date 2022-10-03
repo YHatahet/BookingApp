@@ -9,8 +9,8 @@ public class User
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
     public string? _id { get; set; }
-    public string username { get; set; } //TODO make unique
-    public string email { get; set; } //TODO make unique
-    public string password { get; set; }
-    private bool? isAdmin { get; set; } = false;
+    public string? username { get; set; } //TODO make unique
+    public string? email { get; set; } //TODO make unique
+    public string? password { get; set; }
+    public string? role { get; set; } = "user";
 }

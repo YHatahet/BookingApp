@@ -166,7 +166,7 @@ public class AuthController : ControllerBase
         List<Claim> claims = new List<Claim>
         {
             new Claim("id", user._id),
-            new Claim("userType", user.userType)
+            new Claim(ClaimTypes.Role, user.role)
         };
         var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_token));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
