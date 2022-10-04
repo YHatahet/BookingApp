@@ -14,7 +14,7 @@ public class Room
     public string? _hotel { get; set; }
     public string? description { get; set; }
     public int? maxTenants { get; set; }
-    public int? pricePerNight { get; set; }
+    public double? pricePerNight { get; set; }
     public string[]? facilites { get; set; } = null; //TODO
     // public [{int number, int occupiedDates}] rooms { get; set; } //TODO
 }
