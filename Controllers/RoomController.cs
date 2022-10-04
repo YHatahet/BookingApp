@@ -19,7 +19,7 @@ public class RoomController : ControllerBase
 
 
     [HttpPost("create/{hotelid}")]
-    public async Task<IActionResult> CreateRoom(string hotelid[FromBody] Room newRoom)
+    public async Task<IActionResult> CreateRoom(string hotelid, [FromBody] Room newRoom)
     {
         //TODO
         await _roomCollection.InsertOneAsync(newRoom);
