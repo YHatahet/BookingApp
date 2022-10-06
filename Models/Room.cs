@@ -1,20 +1,33 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-
-namespace BookingApp.Models;
-
-public class Room
+public struct ReservationType
 {
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string? _id { get; set; }
-    public string? title { get; set; } //TODO make unique
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string? _hotel { get; set; }
-    public string? description { get; set; }
-    public int? maxTenants { get; set; }
-    public double? pricePerNight { get; set; }
-    public string[]? facilites { get; set; } = null; //TODO
-    // public [{int number, int occupiedDates}] rooms { get; set; } //TODO
+    public DateTime start;
+    public DateTime end;
+}
+
+
+public struct RoomType
+{
+    public int? roomNumber;
+    public ReservationType[]? occupiedDates;
+}
+
+namespace BookingApp.Models
+{
+    public class Room
+    {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string? _id { get; set; }
+        public string? title { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string? _hotel { get; set; }
+        public string? description { get; set; }
+        public int? maxTenants { get; set; }
+        public double? pricePerNight { get; set; }
+        public string[]? facilites { get; set; } = null;
+        public RoomType[] rooms { get; set; }
+    }
 }
