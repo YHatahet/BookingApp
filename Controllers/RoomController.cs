@@ -11,20 +11,24 @@ public class RoomController : ControllerBase
 {
 
     private readonly IMongoCollection<Room> _roomCollection;
+    private readonly IMongoCollection<Hotel> _hotelCollection;
 
     public RoomController(BookingAppService bookingAppService)
     {
         _roomCollection = bookingAppService._roomCollection;
+        _hotelCollection = bookingAppService._hotelCollection;
     }
 
 
     [HttpPost("create/{hotelid}")]
     public async Task<IActionResult> CreateRoom(string hotelid, [FromBody] Room newRoom)
     {
-        //TODO
+        var hotel = await _hotelCollection.Find<Hotel>(o => o._id == hotelid).FirstOrDefaultAsync();
+        if (hotel == null) return NotFound();
+        newRoom._hotel = hotelid;
+
         await _roomCollection.InsertOneAsync(newRoom);
         return CreatedAtAction(nameof(CreateRoom), new { id = newRoom._id }, newRoom);
-
     }
 
 
@@ -39,6 +43,13 @@ public class RoomController : ControllerBase
     public async Task<Room> GetRoom(string id)
     {
         return await _roomCollection.Find(o => o._id == id).FirstOrDefaultAsync();
+    }
+
+
+    [HttpGet("{hotelid}")]
+    public async Task<List<Room>> GetRoomsInHotel(string hotelid)
+    {
+        return await _roomCollection.Find(o => o._hotel == hotelid).ToListAsync();
     }
 
     //TODO

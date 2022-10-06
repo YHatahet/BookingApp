@@ -39,7 +39,11 @@ public class ReviewController : ControllerBase
         return await _reviewCollection.Find(o => o._id == id).FirstOrDefaultAsync();
     }
 
-    //TODO get hotel reviews
+    [HttpGet("{hotelid}")]
+    public async Task<List<Review>> GetHotelReviews(string id)
+    {
+        return await _reviewCollection.Find(o => o._id == id).ToListAsync();
+    }
 
     [HttpPut("{id}")]
     public async Task<Review> UpdateReview(string id, [FromBody] Review reviewBody)
