@@ -33,19 +33,19 @@ public class ReviewController : ControllerBase
         return await _reviewCollection.Find(new BsonDocument()).Skip(page * limit).Limit(limit).ToListAsync();
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{{id}}")]
     public async Task<Review> GetReview(string id)
     {
         return await _reviewCollection.Find(o => o._id == id).FirstOrDefaultAsync();
     }
 
-    [HttpGet("{hotelid}")]
+    [HttpGet("{{hotelid}}")]
     public async Task<List<Review>> GetHotelReviews(string id)
     {
         return await _reviewCollection.Find(o => o._id == id).ToListAsync();
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{{id}}")]
     public async Task<Review> UpdateReview(string id, [FromBody] Review reviewBody)
     {
         var foundReview = await _reviewCollection.Find(o => o._id == id).FirstOrDefaultAsync();
@@ -58,7 +58,7 @@ public class ReviewController : ControllerBase
     }
 
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{{id}}")]
     public async Task<IActionResult> DeleteReview(string id)
     {
         FilterDefinition<Review> filter = Builders<Review>.Filter.Eq("_id", id);

@@ -25,13 +25,13 @@ public class UserController : ControllerBase
     }
 
 
-    [HttpGet("{id}")]
+    [HttpGet("{{id}}")]
     public async Task<User> GetUser(string id)
     {
         return await _userCollection.Find(o => o._id == id).FirstOrDefaultAsync();
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{{id}}")]
     public async Task<User> UpdateUser(string id, [FromBody] User userBody)
     {
         //TODO refresh token , rehash pass
@@ -45,7 +45,7 @@ public class UserController : ControllerBase
     }
 
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{{id}}")]
     public async Task<IActionResult> DeleteUser(string id)
     {
         FilterDefinition<User> filter = Builders<User>.Filter.Eq("_id", id);

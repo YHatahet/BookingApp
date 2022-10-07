@@ -34,7 +34,7 @@ public class HotelController : ControllerBase
     }
 
 
-    [HttpGet("{id}")]
+    [HttpGet("{{id}}")]
     public async Task<Hotel> GetHotel(string id)
     {
         return await _hotelCollection.Find(o => o._id == id).FirstOrDefaultAsync();
@@ -47,7 +47,7 @@ public class HotelController : ControllerBase
     }
 
 
-    [HttpPut("{id}")]
+    [HttpPut("{{id}}")]
     public async Task<Hotel> UpdateHotel(string id, [FromBody] Hotel hotelBody)
     {
         var foundHotel = await _hotelCollection.Find(o => o._id == id).FirstOrDefaultAsync();
@@ -65,7 +65,7 @@ public class HotelController : ControllerBase
     }
 
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{{id}}")]
     public async Task<IActionResult> DeleteHotel(string id)
     {
         FilterDefinition<Hotel> filter = Builders<Hotel>.Filter.Eq("_id", id);

@@ -39,14 +39,14 @@ public class RoomController : ControllerBase
     }
 
 
-    [HttpGet("{id}")]
+    [HttpGet("{{id}}")]
     public async Task<Room> GetRoom(string id)
     {
         return await _roomCollection.Find(o => o._id == id).FirstOrDefaultAsync();
     }
 
 
-    [HttpGet("{hotelid}")]
+    [HttpGet("{{hotelid}}")]
     public async Task<List<Room>> GetRoomsInHotel(string hotelid)
     {
         return await _roomCollection.Find(o => o._hotel == hotelid).ToListAsync();
@@ -63,7 +63,7 @@ public class RoomController : ControllerBase
     // {}
 
 
-    [HttpPut("{id}")]
+    [HttpPut("{{id}}")]
     public async Task<Room> UpdateRoom(string id, [FromBody] Room hotelBody)
     {
         var foundRoom = await _roomCollection.Find(o => o._id == id).FirstOrDefaultAsync();
@@ -78,7 +78,7 @@ public class RoomController : ControllerBase
     }
 
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{{id}}")]
     public async Task<IActionResult> DeleteRoom(string id)
     {
         FilterDefinition<Room> filter = Builders<Room>.Filter.Eq("_id", id);
