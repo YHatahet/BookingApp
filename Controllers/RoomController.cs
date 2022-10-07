@@ -20,13 +20,16 @@ public class RoomController : ControllerBase
     }
 
 
-    [HttpPost("create/{hotelid}")]
-    public async Task<IActionResult> CreateRoom(string hotelid, [FromBody] Room newRoom)
+    [HttpPost("create/type/{hotelid}")]
+    public async Task<IActionResult> CreateRoomType(string hotelid, [FromBody] Room newRoomType)
     {
         var hotel = await _hotelCollection.Find<Hotel>(o => o._id == hotelid).FirstOrDefaultAsync();
         if (hotel == null) return NotFound();
-        newRoom._hotel = hotelid;
+        newRoomType._hotel = hotelid;
 
+        await _roomCollection.InsertOneAsync(newRoomType);
+        return CreatedAtAction(nameof(CreateRoomType), new { id = newRoomType._id }, newRoomType);
+    }
 
 
     public struct Rooms
