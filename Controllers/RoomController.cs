@@ -27,10 +27,31 @@ public class RoomController : ControllerBase
         if (hotel == null) return NotFound();
         newRoom._hotel = hotelid;
 
-        await _roomCollection.InsertOneAsync(newRoom);
-        return CreatedAtAction(nameof(CreateRoom), new { id = newRoom._id }, newRoom);
+
+
+    public struct Rooms
+    {
+        public int[] roomNumbers { get; set; }
     }
 
+    [HttpPost("create/room/{roomid}")]
+    public async Task<IActionResult> AddRooms(string roomid, [FromBody] Rooms rooms)
+    {
+        var foundRoom = await _roomCollection.Find<Room>(o => o._id == roomid).FirstOrDefaultAsync();
+        if (foundRoom == null) return NotFound();
+        if (foundRoom.rooms == null) foundRoom.rooms = new List<RoomEntry>();
+
+        foreach (int roomNumber in rooms.roomNumbers)
+        {
+            var roomEntry = new RoomEntry();
+            roomEntry.roomNumber = roomNumber;
+            foundRoom.rooms.Add(roomEntry);
+        }
+
+        await _roomCollection.ReplaceOneAsync(o => o._id == roomid, foundRoom);
+        return CreatedAtAction(nameof(AddRooms), new { id = foundRoom._id }, foundRoom);
+
+    }
 
     [HttpGet("all/{page}/{limit}")]
     public async Task<List<Room>> GetAllRooms(int page, int limit)
