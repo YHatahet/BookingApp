@@ -59,7 +59,7 @@ public class RoomController : ControllerBase
     [HttpGet("all/{page}/{limit}")]
     public async Task<List<Room>> GetAllRooms(int page, int limit)
     {
-        return await _roomCollection.Find(new BsonDocument()).Skip(page * limit).Limit(limit).ToListAsync();
+        return await _roomCollection.Find(_ => true).Skip(page * limit).Limit(limit).ToListAsync();
     }
 
 
@@ -130,15 +130,16 @@ public class RoomController : ControllerBase
 
 
     [HttpPut("{{id}}")]
-    public async Task<Room> UpdateRoom(string id, [FromBody] Room hotelBody)
+    public async Task<Room> UpdateRoom(string id, [FromBody] Room roomBody)
     {
         var foundRoom = await _roomCollection.Find(o => o._id == id).FirstOrDefaultAsync();
-        if (hotelBody.title != null) foundRoom.title = hotelBody.title;
-        if (hotelBody._hotel != null) foundRoom._hotel = hotelBody._hotel;
-        if (hotelBody.description != null) foundRoom.description = hotelBody.description;
-        if (hotelBody.maxTenants != null) foundRoom.maxTenants = hotelBody.maxTenants;
-        if (hotelBody.pricePerNight != null) foundRoom.pricePerNight = hotelBody.pricePerNight;
-        //TODO occupied dates
+        if (roomBody.title != null) foundRoom.title = roomBody.title;
+        if (roomBody._hotel != null) foundRoom._hotel = roomBody._hotel;
+        if (roomBody.description != null) foundRoom.description = roomBody.description;
+        if (roomBody.maxTenants != null) foundRoom.maxTenants = roomBody.maxTenants;
+        if (roomBody.pricePerNight != null) foundRoom.pricePerNight = roomBody.pricePerNight;
+        if (roomBody.facilities != null) foundRoom.facilities = roomBody.facilities;
+        if (roomBody.rooms != null) foundRoom.rooms = roomBody.rooms;
         await _roomCollection.ReplaceOneAsync(o => o._id == id, foundRoom);
         return foundRoom;
     }
