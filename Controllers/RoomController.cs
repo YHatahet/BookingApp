@@ -52,15 +52,57 @@ public class RoomController : ControllerBase
         return await _roomCollection.Find(o => o._hotel == hotelid).ToListAsync();
     }
 
-    //TODO
-    // [HttpGet("{hotelid}")]
-    // public async Task<Room> GetRoomsInHotel(string hotelid)
-    // {}
 
-    //TODO
-    // [HttpPost("{book/{roomid}}")]
-    // public async Task<Room> BookRoom(string roomid)
-    // {}
+    [HttpPost("book/{roomid}")]
+    public async Task<IActionResult> BookRoom(string roomid, [FromBody] BookRoomBody roomBody)
+    {
+        Room roomToBook = await _roomCollection.Find(o => o._id == roomid).FirstOrDefaultAsync();
+        if (roomToBook == null) return NotFound("No rooms found with specified room ID");
+        if (roomBody.numOfTenants > roomToBook.maxTenants) return BadRequest("Tenants exceed max allowable number of tenants");
+        if (roomBody.startDate == null || roomBody.endDate == null) return BadRequest("End date cannot be greater than start date");
+
+        string dateFormat = "yyyy-MM-dd";
+        DateTime startDate = DateTime.ParseExact(roomBody.startDate, dateFormat, null);
+        DateTime endDate = DateTime.ParseExact(roomBody.endDate, dateFormat, null);
+
+        if (startDate > endDate) return BadRequest("Start Date cannot be greater than the End Date");
+        if (roomToBook.rooms == null || roomToBook.rooms.Count == 0) return BadRequest("No rooms ");
+
+        // iterate over rooms and see if any thing prevents booking
+        foreach (RoomEntry room in roomToBook.rooms)
+        {
+            if (room.roomNumber != roomBody.roomNumber) continue; // next room
+            if (room.occupiedDates == null) room.occupiedDates = new List<ReservationType>();
+
+            // Check for time conflicts
+            foreach (ReservationType reservation in room.occupiedDates)
+            {
+                DateTime startOccDateVal = reservation.start;
+                DateTime endOccDateVal = reservation.end;
+
+                bool isConflicting =
+                  (startDate <= reservation.start && endDate >= reservation.start) ||
+                  (startDate <= reservation.end && endDate >= reservation.end);
+
+                if (!isConflicting) continue;
+
+                return BadRequest("No vacancies for this room at the given time");
+            }
+
+            var toAdd = new ReservationType();
+            toAdd.start = startDate;
+            toAdd.end = endDate;
+
+            // if no time conflicts found
+            room.occupiedDates.Add(toAdd);
+
+            await _roomCollection.ReplaceOneAsync(o => o._id == roomid, roomToBook);
+            return Ok("Successfully booked");
+
+        }
+        return NotFound("No room number found with the selected room type");
+
+    }
 
 
     [HttpPut("{{id}}")]
