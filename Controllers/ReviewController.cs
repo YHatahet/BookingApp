@@ -10,8 +10,8 @@ namespace BookingApp.Controllers;
 public class ReviewController : ControllerBase
 {
 
-    private IMongoCollection<Review> _reviewCollection;
-    private IMongoCollection<Hotel> _hotelCollection;
+    private readonly IMongoCollection<Review> _reviewCollection;
+    private readonly IMongoCollection<Hotel> _hotelCollection;
     public ReviewController(BookingAppService bookingAppService)
     {
         _reviewCollection = bookingAppService._reviewCollection;
