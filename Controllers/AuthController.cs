@@ -11,8 +11,8 @@ namespace BookingApp.Controllers;
 public class AuthController : ControllerBase
 {
 
-    private IMongoCollection<User> _userCollection;
-    private TokenService _tokenService;
+    private readonly IMongoCollection<User> _userCollection;
+    private readonly TokenService _tokenService;
     private string _token;
 
     public AuthController(BookingAppService bookingAppService, TokenService tokenService)
@@ -48,7 +48,7 @@ public class AuthController : ControllerBase
         var cookieOptions = new CookieOptions { HttpOnly = true };
         Response.Cookies.Append("token", token, cookieOptions);
 
-        return Ok(token);
+        return Ok(user);
     }
 }
 
