@@ -197,8 +197,13 @@ public class AuthController : ControllerBase
         if (user == null) return BadRequest("User not found");
 
         if (!VerifyHash(loginUser.password, "SHA512", user.password)) return BadRequest("Incorrect Password");
-        //TODO cookie
+
         string token = CreateToken(user);
+
+        //Add cookie to response header
+        var cookieOptions = new CookieOptions { HttpOnly = true };
+        Response.Cookies.Append("token", token, cookieOptions);
+
         return Ok(token);
     }
 }
