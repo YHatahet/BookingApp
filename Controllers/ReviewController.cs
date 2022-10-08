@@ -1,5 +1,3 @@
-// using Microsoft.Extensions.Configuration;
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using BookingApp.Models;
 
@@ -13,15 +11,31 @@ public class ReviewController : ControllerBase
 {
 
     private IMongoCollection<Review> _reviewCollection;
+    private IMongoCollection<Hotel> _hotelCollection;
     public ReviewController(BookingAppService bookingAppService)
     {
         _reviewCollection = bookingAppService._reviewCollection;
+        _hotelCollection = bookingAppService._hotelCollection;
     }
 
     [HttpPost("create/{hotelid}")]
     public async Task<IActionResult> CreateReview(string hotelid, [FromBody] Review newReview)
     {
-        //TODO
+
+        Hotel foundHotel = await _hotelCollection.Find(o => o._id == hotelid).FirstOrDefaultAsync();
+        if (foundHotel == null) return NotFound("No hotel found with given ID");
+        if (foundHotel.rating.HasValue)
+        {
+            foundHotel.rating = 0;
+            foundHotel.numOfRatings = 0;
+        };
+        if (foundHotel.numOfRatings.HasValue) foundHotel.numOfRatings = 0;
+        double oldRating = foundHotel.rating.Value;
+        double oldNumOfRatings = foundHotel.numOfRatings.Value;
+        if (!newReview.rating.HasValue) return BadRequest("Missing rating");
+        double newRating = (oldNumOfRatings * oldRating + newReview.rating.Value) / (oldNumOfRatings + 1);
+        newReview._hotel = hotelid;
+        // newRating._user = userid; // TODO fetch from cookie
         await _reviewCollection.InsertOneAsync(newReview);
         return CreatedAtAction(nameof(CreateReview), new { id = newReview._id }, newReview);
 
@@ -40,9 +54,12 @@ public class ReviewController : ControllerBase
     }
 
     [HttpGet("{{hotelid}}")]
-    public async Task<List<Review>> GetHotelReviews(string id)
+    public async Task<IActionResult> GetHotelReviews(string hotelid)
     {
-        return await _reviewCollection.Find(o => o._id == id).ToListAsync();
+        Hotel foundHotel = await _hotelCollection.Find(o => o._id == hotelid).FirstOrDefaultAsync();
+        if (foundHotel == null) return NotFound("No hotel found with given ID");
+        List<Review> foundReviews = await _reviewCollection.Find(o => o._hotel == hotelid).ToListAsync();
+        return Ok(foundReviews);
     }
 
     [HttpPut("{{id}}")]
@@ -63,6 +80,7 @@ public class ReviewController : ControllerBase
     {
         FilterDefinition<Review> filter = Builders<Review>.Filter.Eq("_id", id);
         await _reviewCollection.DeleteOneAsync(filter);
+        //TODO change ratings
         return NoContent();
     }
 }
