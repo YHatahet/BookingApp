@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 
 namespace BookingApp.Models;
-
+[BsonIgnoreExtraElements]
 public class Review
 {
     [BsonId]

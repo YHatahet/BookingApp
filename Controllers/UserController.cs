@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using BookingApp.Models;
 
 using MongoDB.Bson;
@@ -6,15 +7,19 @@ using MongoDB.Driver;
 using BookingApp.Services;
 namespace BookingApp.Controllers;
 
+// [ApiController, Route("users"), Authorize(Roles = "Admin")]
 [ApiController, Route("users")]
 public class UserController : ControllerBase
 {
 
     private readonly IMongoCollection<User> _userCollection;
+    private readonly TokenService _tokenService;
 
-    public UserController(BookingAppService bookingAppService)
+
+    public UserController(BookingAppService bookingAppService, TokenService tokenService)
     {
         _userCollection = bookingAppService._userCollection;
+        _tokenService = tokenService;
     }
 
 
@@ -32,16 +37,27 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("{{id}}")]
-    public async Task<User> UpdateUser(string id, [FromBody] User userBody)
+    public async Task<IActionResult> UpdateUser(string id, [FromBody] User userBody)
     {
-        //TODO refresh token , rehash pass
         var foundUser = await _userCollection.Find(o => o._id == id).FirstOrDefaultAsync();
+        if (foundUser == null) NotFound("User not found");
         if (userBody.username != null) foundUser.username = userBody.username;
         if (userBody.email != null) foundUser.email = userBody.email;
-        if (userBody.password != null) foundUser.password = userBody.password;
+        if (userBody.password != null)
+        {
+            var newHashedPass = _tokenService.ComputeHash(userBody.password, "SHA512", null);
+            foundUser.password = userBody.password;
+
+        }
         if (userBody.role != null) foundUser.role = userBody.role;
         await _userCollection.ReplaceOneAsync(o => o._id == id, foundUser);
-        return foundUser;
+
+        //Add cookie to response header
+        string token = _tokenService.CreateToken(userBody);
+        var cookieOptions = new CookieOptions { HttpOnly = true };
+        Response.Cookies.Append("token", token, cookieOptions);
+
+        return Ok(foundUser);
     }
 
 

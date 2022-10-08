@@ -2,19 +2,21 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 namespace BookingApp.Models;
 
+[BsonIgnoreExtraElements]
 public class ReservationType
 {
     public DateTime start;
     public DateTime end;
 }
 
+[BsonIgnoreExtraElements]
 public class RoomEntry
 {
     public int? roomNumber;
     public List<ReservationType>? occupiedDates;
 }
 
-
+[BsonIgnoreExtraElements]
 public class Room
 {
     [BsonId]
@@ -30,7 +32,7 @@ public class Room
     public List<RoomEntry>? rooms { get; set; }
 }
 
-
+[BsonIgnoreExtraElements]
 public class BookRoomBody
 {
 
