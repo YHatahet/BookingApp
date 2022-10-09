@@ -158,8 +158,8 @@ public class TokenService
 
         List<Claim> claims = new List<Claim>
         {
-            new Claim("id", user._id),
-            new Claim(ClaimTypes.Role, user.role)
+            new Claim("userId", user._id),
+            new Claim("userRole", user.role)
         };
         var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_token));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
