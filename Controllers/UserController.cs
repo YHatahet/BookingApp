@@ -30,13 +30,13 @@ public class UserController : ControllerBase
     }
 
 
-    [HttpGet("{{id}}")]
+    [HttpGet, Route("{id}")]
     public async Task<User> GetUser(string id)
     {
         return await _userCollection.Find(o => o._id == id).FirstOrDefaultAsync();
     }
 
-    [HttpPut("{{id}}")]
+    [HttpPut, Route("{id}")]
     public async Task<IActionResult> UpdateUser(string id, [FromBody] User userBody)
     {
         var foundUser = await _userCollection.Find(o => o._id == id).FirstOrDefaultAsync();
@@ -61,7 +61,7 @@ public class UserController : ControllerBase
     }
 
 
-    [HttpDelete("{{id}}")]
+    [HttpDelete, Route("{id}")]
     public async Task<IActionResult> DeleteUser(string id)
     {
         FilterDefinition<User> filter = Builders<User>.Filter.Eq("_id", id);
