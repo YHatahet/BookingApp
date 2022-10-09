@@ -34,7 +34,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<ActionResult<string>> Login([FromBody] User loginUser)
+    public async Task<ActionResult> Login([FromBody] User loginUser)
     {
         var user = await _userCollection.Find(o => o.username == loginUser.username).FirstOrDefaultAsync();
 
@@ -48,7 +48,7 @@ public class AuthController : ControllerBase
         var cookieOptions = new CookieOptions { HttpOnly = true };
         Response.Cookies.Append("token", token, cookieOptions);
 
-        return Ok(user);
+        return Ok(token);
     }
 }
 

@@ -53,7 +53,7 @@ public class UserController : ControllerBase
         await _userCollection.ReplaceOneAsync(o => o._id == id, foundUser);
 
         //Add cookie to response header
-        string token = _tokenService.CreateToken(userBody);
+        string token = _tokenService.CreateToken(foundUser);
         var cookieOptions = new CookieOptions { HttpOnly = true };
         Response.Cookies.Append("token", token, cookieOptions);
 
